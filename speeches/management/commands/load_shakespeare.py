@@ -1,4 +1,3 @@
-from optparse import make_option
 from six.moves.urllib.request import urlopen
 import xml.etree.ElementTree as etree
 
@@ -51,11 +50,11 @@ PLAYS = {
 class Command(BaseCommand):
     args = '<play>'
     help = 'Import a Shakespeare play into a SayIt instance'
-    option_list = BaseCommand.option_list + (
-        make_option('--commit', action='store_true', help='Whether to commit to the database or not'),
-        make_option('--instance', action='store', default='shakespeare', help='Label of instance to add data to'),
-        make_option('--list', action='store_true', help='List the plays available'),
-    )
+
+    def add_arguments(self, parser):
+        parser.add_argument('--commit', action='store_true', help='Whether to commit to the database or not')
+        parser.add_argument('--instance', action='store', default='shakespeare', help='Label of instance to add data to')
+        parser.add_argument('--list', action='store_true', help='List the plays available')
 
     def make(self, cls, **kwargs):
         s = cls(instance=self.instance, **kwargs)
